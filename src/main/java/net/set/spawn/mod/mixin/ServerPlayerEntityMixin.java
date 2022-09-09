@@ -1,8 +1,8 @@
 package net.set.spawn.mod.mixin;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.container.ContainerListener;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -15,11 +15,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin extends PlayerEntity implements ScreenHandlerListener {
+public abstract class ServerPlayerEntityMixin extends PlayerEntity implements ContainerListener {
 
-    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
-        super(world, pos, yaw, profile);
+    public ServerPlayerEntityMixin(World world, GameProfile profile) {
+        super(world, profile);
     }
+
     @Inject(method = "moveToSpawn", at = @At("HEAD"), cancellable = true)
     public void setSpawn(ServerWorld world, CallbackInfo ci) {
         if (Conditionals.isModActive) {

@@ -1,32 +1,26 @@
 package net.set.spawn.mod.mixin;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.snooper.SnooperListener;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.WorldChunk;
 import net.set.spawn.mod.Conditionals;
 import net.set.spawn.mod.config.SetSpawnProperties;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftServer.class)
-public abstract class MinecraftServerMixin extends ReentrantThreadExecutor<ServerTask> implements SnooperListener, CommandOutput, AutoCloseable {
+public abstract class MinecraftServerMixin extends ReentrantThreadExecutor<ServerTask> implements SnooperListener, CommandOutput, AutoCloseable, Runnable {
 
-    @Shadow public abstract ServerWorld getOverworld();
+    public abstract ServerWorld getOverworld();
 
     private static final double[] coordinates = new double[3];
 
@@ -114,38 +108,7 @@ public abstract class MinecraftServerMixin extends ReentrantThreadExecutor<Serve
 
     @Nullable
     private static BlockPos findOverworldSpawn(ServerWorld world, int x, int z) { // method taken from mc code
-        BlockPos.Mutable mutable = new BlockPos.Mutable(x, 0, z);
-        Biome biome = world.getBiome(mutable);
-        boolean bl = world.getDimension().hasCeiling();
-        BlockState blockState = biome.getGenerationSettings().getSurfaceConfig().getTopMaterial();
-        if (!blockState.getBlock().isIn(BlockTags.VALID_SPAWN)) {
-            return null;
-        } else {
-            WorldChunk worldChunk = world.getChunk(x >> 4, z >> 4);
-            int i = bl ? world.getChunkManager().getChunkGenerator().getSpawnHeight() : worldChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
-            if (i < 0) {
-                return null;
-            } else {
-                int j = worldChunk.sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
-                if (j <= i && j > worldChunk.sampleHeightmap(Heightmap.Type.OCEAN_FLOOR, x & 15, z & 15)) {
-                    return null;
-                } else {
-                    for(int k = i + 1; k >= 0; --k) {
-                        mutable.set(x, k, z);
-                        BlockState blockState2 = world.getBlockState(mutable);
-                        if (!blockState2.getFluidState().isEmpty()) {
-                            break;
-                        }
-
-                        if (blockState2.equals(blockState)) {
-                            return mutable.up().toImmutable();
-                        }
-                    }
-
-                    return null;
-                }
-            }
-        }
+        return world.getDimension().getTopSpawningBlockPosition(x, z, false);
     }
 }
 
