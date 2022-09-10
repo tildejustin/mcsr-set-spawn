@@ -8,11 +8,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.snooper.SnooperListener;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
+import net.minecraft.world.dimension.DimensionType;
 import net.set.spawn.mod.Conditionals;
 import net.set.spawn.mod.config.SetSpawnProperties;
 import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,7 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin extends ReentrantThreadExecutor<ServerTask> implements SnooperListener, CommandOutput, AutoCloseable, Runnable {
 
-    public abstract ServerWorld getOverworld();
+    @Shadow
+    public abstract ServerWorld getWorld(DimensionType dimensionType);
 
     private static final double[] coordinates = new double[3];
 
@@ -31,7 +34,7 @@ public abstract class MinecraftServerMixin extends ReentrantThreadExecutor<Serve
     @Inject(method = "prepareStartRegion", at = @At(value = "HEAD"))
     public void validateSpawn(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci){
         Conditionals.isModActive = false;
-        if (properSpawnEditingCircumstances(this.getOverworld())) {
+        if (properSpawnEditingCircumstances(this.getWorld(DimensionType.OVERWORLD))) {
             Conditionals.isModActive = true;
             double x = coordinates[0];
             double y = coordinates[1];

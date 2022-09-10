@@ -18,14 +18,14 @@ public abstract class LevelLoadingScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "render", at = @At("HEAD"))
+    @Inject(method = "render", at = @At("TAIL"))
     public void displaySetSpawnOnF3(int mouseX, int mouseY, float delta, CallbackInfo ci){
         SetSpawnProperties.init();
         if (Conditionals.isModActive) {
             TextRenderer textRenderer = this.font;
             int horizontalCenter = this.width / 2;
-            int verticalCenter = this.height / - (9 / 2);
-            int verticalPlacement = verticalCenter + 90;
+            int verticalCenter = this.height / 2;
+            int verticalPlacement = verticalCenter + 85;
             int white = 16777215;
             this.drawCenteredString(textRenderer, SetSpawnProperties.coordinates, horizontalCenter, verticalPlacement, white);
         }
