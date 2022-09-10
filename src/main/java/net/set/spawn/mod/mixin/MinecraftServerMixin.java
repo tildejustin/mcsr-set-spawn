@@ -8,6 +8,7 @@ import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.snooper.SnooperListener;
 import net.minecraft.util.thread.ReentrantThreadExecutor;
 import net.minecraft.world.Heightmap;
@@ -113,24 +114,24 @@ public abstract class MinecraftServerMixin extends ReentrantThreadExecutor<Serve
     }
 
     @Nullable
-    private static BlockPos findOverworldSpawn(ServerWorld world, int x, int z) { // method taken from mc code
-        BlockPos.Mutable mutable = new BlockPos.Mutable(x, 0, z);
+    private static BlockPos findOverworldSpawn(ServerWorld world, int x, int z) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable(x, world.getBottomY(), z);
         Biome biome = world.getBiome(mutable);
         boolean bl = world.getDimension().hasCeiling();
         BlockState blockState = biome.getGenerationSettings().getSurfaceConfig().getTopMaterial();
-        if (!blockState.getBlock().isIn(BlockTags.VALID_SPAWN)) {
+        if (!blockState.isIn(BlockTags.VALID_SPAWN)) {
             return null;
         } else {
-            WorldChunk worldChunk = world.getChunk(x >> 4, z >> 4);
-            int i = bl ? world.getChunkManager().getChunkGenerator().getSpawnHeight() : worldChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
-            if (i < 0) {
+            WorldChunk worldChunk = world.getChunk(ChunkSectionPos.getSectionCoord(x), ChunkSectionPos.getSectionCoord(z));
+            int i = bl ? world.getChunkManager().getChunkGenerator().getSpawnHeight(world) : worldChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
+            if (i < world.getBottomY()) {
                 return null;
             } else {
                 int j = worldChunk.sampleHeightmap(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
                 if (j <= i && j > worldChunk.sampleHeightmap(Heightmap.Type.OCEAN_FLOOR, x & 15, z & 15)) {
                     return null;
                 } else {
-                    for(int k = i + 1; k >= 0; --k) {
+                    for(int k = i + 1; k >= world.getBottomY(); --k) {
                         mutable.set(x, k, z);
                         BlockState blockState2 = world.getBlockState(mutable);
                         if (!blockState2.getFluidState().isEmpty()) {
