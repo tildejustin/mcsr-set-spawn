@@ -5,15 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MinecraftServerMixin",
-    "ServerPlayerEntityMixin"
+    "PlayerManagerMixin",
+    "ServerPlayerEntityMixin",
+    "SpawnLocatingAccessor"
   ],
-  "server": [],
   "injectors": {
     "defaultRequire": 1
-  },
-  "client": [
-    "CreateWorldScreenMixin",
-    "DebugHudMixin",
-    "LevelLoadingScreenMixin"
-  ]
+  }
 }
