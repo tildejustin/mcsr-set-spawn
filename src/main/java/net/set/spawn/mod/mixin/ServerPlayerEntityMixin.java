@@ -54,6 +54,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
                             response = "The coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are obstructed by blocks. Not overriding player spawnpoint.";
                             SetSpawn.errorMessage = response;
                             SetSpawn.LOGGER.warn(response);
+                            //
                         }
                     } else {
                         SetSpawn.shouldSendErrorMessage = true;
