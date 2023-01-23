@@ -1,58 +1,43 @@
 plugins {
 	id 'fabric-loom' version '1.0-SNAPSHOT'
-	id 'org.ajoberstar.grgit' version '4.1.0'
+	id 'legacy-looming' version "1.0-SNAPSHOT" // Version must be the same as fabric-loom's
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
-def getVersionMetadata() {
-	// CI builds version numbers
-	def build_id = System.getenv("RELEASE_TAG")
-	if (build_id != null) {
-		return build_id
-	}
 
-	// Development builds
-	if (grgit == null) {
-		return "dev"
-	}
+archivesBaseName = project.archives_base_name
+version = "${project.mod_version}+${project.minecraft_version}"
+group = project.maven_group
 
-	// Named development builds
-	def id = grgit.head().abbreviatedId
-	if (!grgit.status().clean) {
-		id += "-dirty"
-	}
-
-	return "rev.${id}"
+loom {
+	setIntermediaryUrl('https://repo.legacyfabric.net/repository/legacyfabric/net/legacyfabric/intermediary/%1$s/intermediary-%1$s-v2.jar');
 }
-
-archivesBaseName = "${project.mod_id}-${project.minecraft_version}"
-version = "${getVersionMetadata()}"
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings "net.legacyfabric:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 }
 
 processResources {
-	inputs.property "mod_id", project.mod_id
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "mod_id": project.mod_id, "version": project.version
+		expand "version": project.version
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.encoding = "UTF-8"
+	it.options.release = 16
 }
 
 java {
 	withSourcesJar()
 }
 
-jar {
-	from("LICENSE")
-}
+//jar {
+//	from("LICENSE")
+//}

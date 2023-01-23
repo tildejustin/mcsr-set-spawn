@@ -1,4 +1,4 @@
-package net.set.spawn.mod;
+package xyz.tildejustin.setspawn;
 
 public class Config {
     private boolean enabled;

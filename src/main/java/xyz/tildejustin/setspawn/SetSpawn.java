@@ -1,4 +1,4 @@
-package net.set.spawn.mod;
+package xyz.tildejustin.setspawn;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;

@@ -3,13 +3,14 @@
   "id": "${mod_id}",
   "version": "${version}",
 
-  "name": "Set Spawn 1.15.2",
+  "name": "Set Spawn 1.8.0",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
   "authors": [
     "bdamja",
     "Void_X_Walker",
     "jan-leila",
-    "RedLime"
+    "RedLime",
+    "tildejustin"
   ],
   "license": "LGPL-3.0-only",
   "icon": "assets/setspawnmod/icon.png",
@@ -17,11 +18,11 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.set.spawn.mod.SetSpawn"
+      "xyz.tildejustin.setspawn.SetSpawn"
     ]
   },
   "mixins": [
-    "setspawnmod.mixins.json"
+    "setspawn.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.12.2",
