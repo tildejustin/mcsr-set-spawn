@@ -1,4 +1,4 @@
-package xyz.tildejustin.setspawn;
+package net.set.spawn.mod;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -15,10 +15,14 @@ import java.util.Objects;
 
 public class SetSpawn implements ClientModInitializer {
     public static Logger LOGGER = LogManager.getLogger();
+    public static final String MOD_ID = "setspawnmod";
+    public static boolean shouldModifySpawn;
     public static boolean shouldSendErrorMessage;
     public static int ServerPlayerEntityInitCounter;
     public static String errorMessage;
+    public static final String subDir = SetSpawn.MOD_ID + "_global";
     public static File localConfigFile;
+    public static File globalConfigFile;
     public static Config config;
 
     public static void log(Level level, String message) {
@@ -35,10 +39,15 @@ public class SetSpawn implements ClientModInitializer {
         }
     }
 
+
     private static void loadProperties() throws IOException, NumberFormatException, JsonSyntaxException {
         Gson gson = new Gson();
         BufferedReader bufferedReader = new BufferedReader(new FileReader(localConfigFile));
         config = gson.fromJson(bufferedReader, Config.class);
+        if (config.isUseGlobalConfig()) {
+            bufferedReader = new BufferedReader(new FileReader(globalConfigFile));
+            config = gson.fromJson(bufferedReader, Config.class);
+        }
     }
 
     private static void writeDefaultProperties(File file) throws IOException {
@@ -50,7 +59,7 @@ public class SetSpawn implements ClientModInitializer {
         Seed rng = new Seed("-4810268054211229692", "rng", -153.5, 234.5);
         Seed arch = new Seed("2613428371297940758", "arch", -154.5, -217.5);
         Seed fletcher = new Seed("2478133068685386821", "fletcher", -248.5, 106.5);
-        Seed[] seedsToWrite = new Seed[]{vine, taiga, gravel, dolphin, treasure, rng, arch, fletcher};
+        Seed[] seedsToWrite = new Seed[] { vine, taiga, gravel, dolphin, treasure, rng, arch, fletcher };
         Config config = new Config(true, false, seedsToWrite);
 
         try (Writer writer = new FileWriter(file)) {
@@ -64,6 +73,22 @@ public class SetSpawn implements ClientModInitializer {
         }
     }
 
+    @Override
+    public void onInitializeClient() {
+        LOGGER.info("Initializing");
+        File globalDir = new File(System.getProperty("user.home").replace("\\", "/"), subDir);
+        globalDir.mkdirs();
+        globalConfigFile = new File(globalDir, "setspawn.json");
+        localConfigFile = FabricLoader.getInstance().getConfigDir().resolve("setspawn.json").toFile();
+        createIfNonExistent(globalConfigFile);
+        createIfNonExistent(localConfigFile);
+        try {
+            loadProperties();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Seed findSeedObjectFromLong(long seedLong) {
         String seed = String.valueOf(seedLong);
         Seed[] seedObjects = config.getSeeds();
@@ -73,18 +98,6 @@ public class SetSpawn implements ClientModInitializer {
             }
         }
         return null;
-    }
-
-    @Override
-    public void onInitializeClient() {
-        LOGGER.info("Initializing");
-        localConfigFile = FabricLoader.getInstance().getConfigDir().resolve("setspawn.json").toFile();
-        createIfNonExistent(localConfigFile);
-        try {
-            loadProperties();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

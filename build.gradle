@@ -3,13 +3,12 @@ plugins {
 	id 'legacy-looming' version "1.0-SNAPSHOT" // Version must be the same as fabric-loom's
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 
-archivesBaseName = project.archives_base_name
-version = "${project.mod_version}-${project.minecraft_version}"
-group = project.maven_group
+archivesBaseName = "${project.mod_id}-${project.minecraft_version}"
+version = "${version}"
 
 loom {
 	setIntermediaryUrl('https://repo.legacyfabric.net/repository/legacyfabric/net/legacyfabric/intermediary/%1$s/intermediary-%1$s-v2.jar');
@@ -22,22 +21,22 @@ dependencies {
 }
 
 processResources {
+	inputs.property "mod_id", project.mod_id
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "mod_id": project.mod_id, "version": project.version
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	it.options.release = 16
+	it.options.release = 17
 }
 
 java {
 	withSourcesJar()
 }
 
-//jar {
-//	from("LICENSE")
-//}
+jar {
+	from("LICENSE")
+}

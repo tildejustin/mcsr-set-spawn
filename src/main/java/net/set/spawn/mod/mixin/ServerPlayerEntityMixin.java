@@ -1,4 +1,4 @@
-package xyz.tildejustin.setspawn.mixin;
+package net.set.spawn.mod.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import xyz.tildejustin.setspawn.Seed;
-import xyz.tildejustin.setspawn.SetSpawn;
+import net.set.spawn.mod.Seed;
+import net.set.spawn.mod.SetSpawn;
 
 
 @Mixin(ServerPlayerEntity.class)
@@ -24,15 +24,22 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     @ModifyVariable(method = "<init>", at = @At("STORE"), ordinal = 0)
     private BlockPos setspawn_setblockpos(BlockPos blockPos) {
-        SetSpawn.ServerPlayerEntityInitCounter++;
-        if (SetSpawn.ServerPlayerEntityInitCounter == 2 && SetSpawn.config.isEnabled()) {
+        if (SetSpawn.config.isEnabled()) {
+            SetSpawn.ServerPlayerEntityInitCounter++;
+        }
+        if (SetSpawn.ServerPlayerEntityInitCounter == 2) {
+            SetSpawn.shouldModifySpawn = true;
+        }
+        if (SetSpawn.shouldModifySpawn) {
+            SetSpawn.shouldModifySpawn = false;
             Seed seedObject = SetSpawn.findSeedObjectFromLong(this.world.getSeed());
+            String response;
             if (seedObject != null) {
                 int xFloor = MathHelper.floor(seedObject.getX());
                 int zFloor = MathHelper.floor(seedObject.getZ());
                 if ((Math.abs(xFloor - this.world.getSpawnPos().getX()) > MinecraftServer.getServer().getSpawnProtectionRadius() - 6) || (Math.abs(zFloor - this.world.getSpawnPos().getZ()) > MinecraftServer.getServer().getSpawnProtectionRadius() - 6)) {
                     SetSpawn.shouldSendErrorMessage = true;
-                    String response = "The X or Z coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.";
+                    response = "The X or Z coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.";
                     SetSpawn.errorMessage = response;
                     SetSpawn.log(Level.WARN, response);
                 } else {

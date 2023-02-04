@@ -1,4 +1,4 @@
-package xyz.tildejustin.setspawn;
+package net.set.spawn.mod;
 
 public class Seed {
     private String seed;

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "setspawn",
+  "id": "${mod_id}",
   "version": "${version}",
   "name": "Set Spawn 1.8.0",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
@@ -16,11 +16,11 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "xyz.tildejustin.setspawn.SetSpawn"
+      "net.set.spawn.mod.SetSpawn"
     ]
   },
   "mixins": [
-    "setspawn.mixins.json"
+    "setspawnmod.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.13",
