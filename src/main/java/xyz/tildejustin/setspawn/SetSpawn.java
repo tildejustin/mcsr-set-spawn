@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,11 +15,15 @@ import java.util.Objects;
 
 public class SetSpawn implements ClientModInitializer {
     public static Logger LOGGER = LogManager.getLogger();
-    public static boolean shouldModifySpawn;
     public static boolean shouldSendErrorMessage;
+    public static int ServerPlayerEntityInitCounter;
     public static String errorMessage;
     public static File localConfigFile;
     public static Config config;
+
+    public static void log(Level level, String message) {
+        LOGGER.log(level, message);
+    }
 
     private static void createIfNonExistent(File file) {
         try {
@@ -45,7 +50,7 @@ public class SetSpawn implements ClientModInitializer {
         Seed rng = new Seed("-4810268054211229692", "rng", -153.5, 234.5);
         Seed arch = new Seed("2613428371297940758", "arch", -154.5, -217.5);
         Seed fletcher = new Seed("2478133068685386821", "fletcher", -248.5, 106.5);
-        Seed[] seedsToWrite = new Seed[] { vine, taiga, gravel, dolphin, treasure, rng, arch, fletcher };
+        Seed[] seedsToWrite = new Seed[]{vine, taiga, gravel, dolphin, treasure, rng, arch, fletcher};
         Config config = new Config(true, false, seedsToWrite);
 
         try (Writer writer = new FileWriter(file)) {
@@ -59,6 +64,17 @@ public class SetSpawn implements ClientModInitializer {
         }
     }
 
+    public static Seed findSeedObjectFromLong(long seedLong) {
+        String seed = String.valueOf(seedLong);
+        Seed[] seedObjects = config.getSeeds();
+        for (Seed seedObject : seedObjects) {
+            if (Objects.equals(seedObject.getSeed(), seed)) {
+                return seedObject;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void onInitializeClient() {
         LOGGER.info("Initializing");
@@ -69,17 +85,6 @@ public class SetSpawn implements ClientModInitializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Seed findSeedObjectFromLong(long seedLong) {
-        String seed = String.valueOf(seedLong);
-        Seed[] seedObjects = config.getSeeds();
-        for (Seed seedObject : seedObjects) {
-            if (Objects.equals(seedObject.getSeed(), seed)) {
-                return seedObject;
-            }
-        }
-        return null;
     }
 
 }

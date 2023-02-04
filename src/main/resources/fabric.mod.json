@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "setspawn",
   "version": "${version}",
-
   "name": "Set Spawn 1.8.0",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
   "authors": [
@@ -14,7 +13,6 @@
   ],
   "license": "LGPL-3.0-only",
   "icon": "assets/setspawnmod/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "client": [
