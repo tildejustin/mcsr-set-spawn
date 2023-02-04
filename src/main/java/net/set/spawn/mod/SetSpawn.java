@@ -14,13 +14,13 @@ import java.io.*;
 import java.util.Objects;
 
 public class SetSpawn implements ClientModInitializer {
-    public static Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "setspawnmod";
+    public static final String subDir = SetSpawn.MOD_ID + "_global";
+    public static Logger LOGGER = LogManager.getLogger();
     public static boolean shouldModifySpawn;
     public static boolean shouldSendErrorMessage;
     public static int ServerPlayerEntityInitCounter;
     public static String errorMessage;
-    public static final String subDir = SetSpawn.MOD_ID + "_global";
     public static File localConfigFile;
     public static File globalConfigFile;
     public static Config config;
@@ -59,7 +59,7 @@ public class SetSpawn implements ClientModInitializer {
         Seed rng = new Seed("-4810268054211229692", "rng", -153.5, 234.5);
         Seed arch = new Seed("2613428371297940758", "arch", -154.5, -217.5);
         Seed fletcher = new Seed("2478133068685386821", "fletcher", -248.5, 106.5);
-        Seed[] seedsToWrite = new Seed[] { vine, taiga, gravel, dolphin, treasure, rng, arch, fletcher };
+        Seed[] seedsToWrite = new Seed[]{vine, taiga, gravel, dolphin, treasure, rng, arch, fletcher};
         Config config = new Config(true, false, seedsToWrite);
 
         try (Writer writer = new FileWriter(file)) {
@@ -71,6 +71,17 @@ public class SetSpawn implements ClientModInitializer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Seed findSeedObjectFromLong(long seedLong) {
+        String seed = String.valueOf(seedLong);
+        Seed[] seedObjects = config.getSeeds();
+        for (Seed seedObject : seedObjects) {
+            if (Objects.equals(seedObject.getSeed(), seed)) {
+                return seedObject;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -87,17 +98,6 @@ public class SetSpawn implements ClientModInitializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Seed findSeedObjectFromLong(long seedLong) {
-        String seed = String.valueOf(seedLong);
-        Seed[] seedObjects = config.getSeeds();
-        for (Seed seedObject : seedObjects) {
-            if (Objects.equals(seedObject.getSeed(), seed)) {
-                return seedObject;
-            }
-        }
-        return null;
     }
 
 }
