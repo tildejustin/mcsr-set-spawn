@@ -14,18 +14,15 @@ import java.util.Objects;
 
 public class SetSpawn implements ClientModInitializer {
     public static Logger LOGGER = LogManager.getLogger();
-    public static final String MOD_ID = "setspawnmod";
     public static boolean shouldModifySpawn;
     public static boolean shouldSendErrorMessage;
     public static String errorMessage;
-    public static final String subDir = SetSpawn.MOD_ID + "_global";
     public static File localConfigFile;
-    public static File globalConfigFile;
     public static Config config;
 
     private static void createIfNonExistent(File file) {
         try {
-            if(file.createNewFile()){
+            if (file.createNewFile()) {
                 writeDefaultProperties(file);
             }
         } catch (IOException e) {
@@ -37,10 +34,6 @@ public class SetSpawn implements ClientModInitializer {
         Gson gson = new Gson();
         BufferedReader bufferedReader = new BufferedReader(new FileReader(localConfigFile));
         config = gson.fromJson(bufferedReader, Config.class);
-        if (config.isUseGlobalConfig()) {
-            bufferedReader = new BufferedReader(new FileReader(globalConfigFile));
-            config = gson.fromJson(bufferedReader, Config.class);
-        }
     }
 
     private static void writeDefaultProperties(File file) throws IOException {
@@ -69,11 +62,7 @@ public class SetSpawn implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         LOGGER.info("Initializing");
-        File globalDir = new File(System.getProperty("user.home").replace("\\", "/"), subDir);
-        globalDir.mkdirs();
-        globalConfigFile = new File(globalDir, "setspawn.json");
         localConfigFile = FabricLoader.getInstance().getConfigDir().resolve("setspawn.json").toFile();
-        createIfNonExistent(globalConfigFile);
         createIfNonExistent(localConfigFile);
         try {
             loadProperties();

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "setspawn",
   "version": "${version}",
 
   "name": "Set Spawn 1.8.0",
@@ -25,8 +25,8 @@
     "setspawn.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.2",
-    "minecraft": "~1.15"
+    "fabricloader": ">=0.14.13",
+    "minecraft": "1.8.0"
   },
   "breaks": {
     "worldpreview": "*"
