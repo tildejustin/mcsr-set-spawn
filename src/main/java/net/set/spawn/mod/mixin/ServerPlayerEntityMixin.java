@@ -7,12 +7,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.set.spawn.mod.Seed;
+import net.set.spawn.mod.SetSpawn;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import net.set.spawn.mod.Seed;
-import net.set.spawn.mod.SetSpawn;
 
 
 @Mixin(ServerPlayerEntity.class)
@@ -22,14 +22,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         super(world, profile);
     }
 
-    @ModifyVariable(method = "<init>", at = @At("STORE"), ordinal = 0)
+    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/world/ServerWorld;getTopPosition(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/BlockPos;"))
     private BlockPos setspawn_setblockpos(BlockPos blockPos) {
-        if (SetSpawn.config.isEnabled()) {
-            SetSpawn.ServerPlayerEntityInitCounter++;
-        }
-        if (SetSpawn.ServerPlayerEntityInitCounter == 2) {
-            SetSpawn.shouldModifySpawn = true;
-        }
         if (SetSpawn.shouldModifySpawn) {
             SetSpawn.shouldModifySpawn = false;
             Seed seedObject = SetSpawn.findSeedObjectFromLong(this.world.getSeed());
