@@ -6,9 +6,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Objects;
@@ -16,17 +13,15 @@ import java.util.Objects;
 public class SetSpawn implements ClientModInitializer {
     public static final String MOD_ID = "setspawnmod";
     public static final String subDir = SetSpawn.MOD_ID + "_global";
-    public static Logger LOGGER = LogManager.getLogger();
     public static boolean shouldModifySpawn;
     public static boolean shouldSendErrorMessage;
-    public static int ServerPlayerEntityInitCounter;
     public static String errorMessage;
     public static File localConfigFile;
     public static File globalConfigFile;
     public static Config config;
 
-    public static void log(Level level, String message) {
-        LOGGER.log(level, message);
+    public static void log(String message) {
+        System.out.printf("[%s] %s", MOD_ID, message);
     }
 
     private static void createIfNonExistent(File file) {
@@ -86,7 +81,6 @@ public class SetSpawn implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        LOGGER.info("Initializing");
         File globalDir = new File(System.getProperty("user.home").replace("\\", "/"), subDir);
         globalDir.mkdirs();
         globalConfigFile = new File(globalDir, "setspawn.json");
