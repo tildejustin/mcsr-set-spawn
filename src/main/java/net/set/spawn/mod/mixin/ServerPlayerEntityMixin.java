@@ -1,5 +1,6 @@
 package net.set.spawn.mod.mixin;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -17,11 +18,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     private int xFloor;
     private int zFloor;
 
-    public ServerPlayerEntityMixin(World world, String string) {
-        super(world, string);
+    public ServerPlayerEntityMixin(World world, GameProfile profile) {
+        super(world, profile);
     }
 
-    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;method_3708(II)I"), ordinal = 0)
+    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/world/ServerWorld;method_3708(II)I"), ordinal = 0)
     private int setspawn_setX(int x) {
         if (SetSpawn.shouldModifySpawn) {
             SetSpawn.shouldModifySpawn = false;
@@ -42,7 +43,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         return x;
     }
 
-    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;method_3708(II)I"), ordinal = 1)
+    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/world/ServerWorld;method_3708(II)I"), ordinal = 1)
     private int setspawn_setZ(int z) {
         if (SetSpawn.shouldSendErrorMessage) {
             return z;
@@ -50,7 +51,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         return zFloor;
     }
 
-    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;method_3708(II)I"), ordinal = 2)
+    @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/world/ServerWorld;method_3708(II)I"), ordinal = 2)
     private int setspawn_setY(int y) {
         if (SetSpawn.shouldSendErrorMessage) {
             return y;

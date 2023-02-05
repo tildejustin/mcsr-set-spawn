@@ -1,9 +1,9 @@
 package net.set.spawn.mod.mixin;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.Connection;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.LiteralText;
 import net.set.spawn.mod.SetSpawn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,10 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
-    public void onPlayerConnect(Connection connection, ServerPlayerEntity player, CallbackInfo ci) {
+    public void onPlayerConnect(ClientConnection clientConnection, ServerPlayerEntity player, CallbackInfo ci) {
         if (SetSpawn.shouldSendErrorMessage) {
-            ChatMessage message = ChatMessage.createTextMessage("§c" + SetSpawn.errorMessage + " This run is not verifiable.");
-            player.method_5505(message);
+            LiteralText message = new LiteralText("§c" + SetSpawn.errorMessage + " This run is not verifiable.");
+            player.sendMessage(message);
         }
         SetSpawn.shouldSendErrorMessage = false;
     }
