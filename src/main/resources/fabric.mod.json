@@ -20,7 +20,7 @@
     ]
   },
   "mixins": [
-    "setspawnmod.mixins.json"
+    "${mod_id}.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.12.12",
