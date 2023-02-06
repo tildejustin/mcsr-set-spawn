@@ -12,7 +12,6 @@ public abstract class MinecraftServerMixin {
 
     @Inject(method = "prepareWorlds", at = @At(value = "HEAD"))
     public void setspawnmod_startedWorldGen(CallbackInfo ci) {
-        // reset count on new world
         SetSpawn.shouldModifySpawn = true;
     }
 }

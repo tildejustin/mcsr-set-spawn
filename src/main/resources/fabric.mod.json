@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "${mod_id}",
   "version": "${version}",
-  "name": "Set Spawn 1.8.0",
+  "name": "Set Spawn 1.8.x",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
   "authors": [
     "bdamja",
@@ -24,7 +24,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.12.12",
-    "minecraft": "1.8.0"
+    "minecraft": "~1.8.0"
   },
   "breaks": {
     "worldpreview": "*"
