@@ -4,13 +4,17 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.level.LevelInfo;
 import net.set.spawn.mod.Seed;
 import net.set.spawn.mod.SetSpawn;
 import org.apache.logging.log4j.Level;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
@@ -31,7 +35,16 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             if (seedObject != null) {
                 int xFloor = MathHelper.floor(seedObject.getX());
                 int zFloor = MathHelper.floor(seedObject.getZ());
-                if ((Math.abs(xFloor - this.world.getSpawnPos().getX()) > MinecraftServer.getServer().getSpawnProtectionRadius() - 6) || (Math.abs(zFloor - this.world.getSpawnPos().getZ()) > MinecraftServer.getServer().getSpawnProtectionRadius() - 6)) {
+                BlockPos spawnPos = world.getSpawnPos();
+                int radius = Math.max(5, ((ServerWorld)world).getServer().getSpawnProtectionRadius() - 6);
+                int j = MathHelper.floor(world.getWorldBorder().getDistanceInsideBorder(blockPos.getX(), blockPos.getZ()));
+                if (j < radius) {
+                    radius = j;
+                }
+                if (j <= 1) {
+                    radius = 1;
+                }
+                if (Math.abs(xFloor + 0.5F - spawnPos.getX()) > radius || Math.abs(zFloor + 0.5F - spawnPos.getZ()) > radius)  {
                     SetSpawn.shouldSendErrorMessage = true;
                     response = "The X or Z coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.";
                     SetSpawn.errorMessage = response;
