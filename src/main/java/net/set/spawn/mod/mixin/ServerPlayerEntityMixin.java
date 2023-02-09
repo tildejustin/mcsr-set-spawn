@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     private int xFloor;
     private int zFloor;
+    private Seed seedObject;
 
     public ServerPlayerEntityMixin(World world, String string) {
         super(world, string);
@@ -26,7 +27,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     private int setspawn_setX(int x) {
         if (SetSpawn.shouldModifySpawn) {
             SetSpawn.shouldModifySpawn = false;
-            Seed seedObject = SetSpawn.findSeedObjectFromLong(this.world.getSeed());
+            seedObject = SetSpawn.findSeedObjectFromLong(this.world.getSeed());
             String response;
             if (seedObject != null) {
                 xFloor = MathHelper.floor(seedObject.getX());
@@ -47,7 +48,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;method_3708(II)I"), ordinal = 1)
     private int setspawn_setZ(int z) {
-        if (SetSpawn.shouldSendErrorMessage) {
+        if (SetSpawn.shouldSendErrorMessage || seedObject == null) {
             return z;
         }
         return zFloor;
@@ -55,9 +56,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     @ModifyVariable(method = "<init>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;method_3708(II)I"), ordinal = 2)
     private int setspawn_setY(int y) {
-        if (SetSpawn.shouldSendErrorMessage) {
+        if (SetSpawn.shouldSendErrorMessage || seedObject == null) {
             return y;
         }
-        return MinecraftServer.getServer().getWorld().method_3708(xFloor, zFloor);
+        return world.method_3708(xFloor, zFloor);
     }
 }
