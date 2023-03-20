@@ -50,10 +50,8 @@ public class SetSpawn implements ClientModInitializer {
     }
 
     private static void writeDefaultProperties(File file) throws IOException {
-        Seed desert = new Seed("225874918561344128", "desert", -418.5, -455.5);
-        Seed paper = new Seed("-2595072006442097346", "paper", -222.5, -249.5);
-        Seed snow = new Seed("4929216164286115443", "snow", 214.5, 265.5);
-        Seed[] seedsToWrite = new Seed[]{desert, paper, snow};
+        Seed WR = new Seed("-2655591615036867964", "Savannah", -173.5, 1512.5);
+        Seed[] seedsToWrite = new Seed[]{WR};
         Config config = new Config(true, false, seedsToWrite);
         try (Writer writer = new FileWriter(file)) {
             Gson gson = new GsonBuilder()

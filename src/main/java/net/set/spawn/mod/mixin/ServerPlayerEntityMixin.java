@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.level.LevelInfo;
 import net.set.spawn.mod.Seed;
 import net.set.spawn.mod.SetSpawn;
+import org.apache.commons.lang3.Range;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +37,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 int xFloor = MathHelper.floor(seedObject.getX());
                 int zFloor = MathHelper.floor(seedObject.getZ());
                 BlockPos spawnPos = world.getSpawnPos();
-                int radius = Math.max(5, ((ServerWorld)world).getServer().getSpawnProtectionRadius() - 6);
+                int radius = Math.max(0, world.getServer().method_12834((ServerWorld) world));
                 int j = MathHelper.floor(world.getWorldBorder().getDistanceInsideBorder(blockPos.getX(), blockPos.getZ()));
                 if (j < radius) {
                     radius = j;
@@ -44,7 +45,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 if (j <= 1) {
                     radius = 1;
                 }
-                if (Math.abs(xFloor + 0.5F - spawnPos.getX()) > radius || Math.abs(zFloor + 0.5F - spawnPos.getZ()) > radius)  {
+                if (Math.abs(xFloor - spawnPos.getX()) > 10 || Math.abs(zFloor - spawnPos.getZ()) > 10) {
                     SetSpawn.shouldSendErrorMessage = true;
                     response = "The X or Z coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.";
                     SetSpawn.errorMessage = response;
