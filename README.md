@@ -4,7 +4,6 @@
 * Configurable seeds and coordinates in /config/setspawn.json
 * Coordinates are validated before overriding
 * Works with multi using the global config file
-* Versions for 1.15.2, 1.16.1, 1.16.5, and 1.17.1
 
 ## Usage
 
