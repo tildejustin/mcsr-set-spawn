@@ -45,7 +45,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 if (j <= 1) {
                     radius = 1;
                 }
-                if (Math.abs(xFloor - spawnPos.getX()) > 10 || Math.abs(zFloor - spawnPos.getZ()) > 10) {
+                if (Math.abs(xFloor - spawnPos.getX()) > radius || Math.abs(zFloor - spawnPos.getZ()) > radius) {
                     SetSpawn.shouldSendErrorMessage = true;
                     response = "The X or Z coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.";
                     SetSpawn.errorMessage = response;
