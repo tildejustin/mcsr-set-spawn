@@ -28,7 +28,7 @@ def getVersionMetadata() {
     return "rev.${id}"
 }
 
-archivesBaseName = "${project.mod_id}-${project.minecraft_version}"
+archivesBaseName = "${project.mod_id}-${project.minecraft_version_range}"
 version = "${getVersionMetadata()}"
 
 loom {
@@ -47,7 +47,7 @@ processResources {
     inputs.property "version", project.version
 
     filesMatching("fabric.mod.json") {
-        expand "mod_id": project.mod_id, "version": project.version, "minecraft_version": project.minecraft_version
+        expand "mod_id": project.mod_id, "version": project.version, "minecraft_version_range": project.minecraft_version_range, "minecraft_version": project.minecraft_version
     }
 }
 
