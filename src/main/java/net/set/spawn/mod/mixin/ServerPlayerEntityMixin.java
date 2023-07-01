@@ -42,7 +42,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
                     SetSpawn.errorMessage = response;
                     SetSpawn.LOGGER.warn(response);
                 } else {
-                    BlockPos spawnPos = SpawnLocatingAccessor.callFindOverworldSpawn(world, xFloor, zFloor, false);
+                    BlockPos spawnPos = SpawnLocatingAccessor.callFindOverworldSpawn(world, xFloor, zFloor);
                     if (spawnPos != null) {
                         this.refreshPositionAndAngles(spawnPos, 0.0F, 0.0F);
                         if (world.isSpaceEmpty(this)) {
