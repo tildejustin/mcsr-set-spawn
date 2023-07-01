@@ -17,7 +17,7 @@ public class PlayerManagerMixin {
     public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         if (SetSpawn.shouldSendErrorMessage) {
             LiteralText message = new LiteralText("§c" + SetSpawn.errorMessage + " This run is not verifiable.");
-            player.sendMessage(message);
+            player.sendMessage(message, true);
         }
         SetSpawn.shouldSendErrorMessage = false;
     }
