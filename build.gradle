@@ -40,9 +40,10 @@ dependencies {
 processResources {
 	inputs.property "mod_id", project.mod_id
 	inputs.property "version", project.version
+	inputs.property "target_version", project.target_version
 
 	filesMatching("fabric.mod.json") {
-		expand "mod_id": project.mod_id, "version": project.version
+		expand "mod_id": project.mod_id, "version": project.version, "target_version": project.target_version
 	}
 }
 
