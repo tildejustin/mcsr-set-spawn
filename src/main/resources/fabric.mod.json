@@ -3,7 +3,7 @@
   "id": "${mod_id}",
   "version": "${version}",
 
-  "name": "Set Spawn 1.15.2",
+  "name": "Set Spawn 1.14-1.15",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
   "authors": [
     "bdamja",
@@ -24,8 +24,8 @@
     "setspawnmod.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.2",
-    "minecraft": "~1.15"
+    "fabricloader": ">=0.12.12",
+    "minecraft": ">=1.14 <1.16"
   },
   "breaks": {
     "worldpreview": "*"
