@@ -1,25 +1,29 @@
 package net.set.spawn.mod.mixin;
 
-import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.set.spawn.mod.SetSpawn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
-
-    @Inject(method = "onPlayerConnect", at = @At("TAIL"))
-    public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+    @Redirect(
+            method = {
+                    "Lnet/minecraft/server/PlayerManager;onPlayerConnect(Lnet/minecraft/network/ClientConnection;Lnet/minecraft/server/network/ServerPlayerEntity;)V",
+                    "Lnet/minecraft/server/PlayerManager;onPlayerConnect(Lnet/minecraft/network/ClientConnection;Lnet/minecraft/server/network/ServerPlayerEntity;I)V"
+            },
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;onSpawn()V"),
+            require = 0
+    )
+    private void onPlayerConnect(ServerPlayerEntity player) {
+        player.onSpawn();
         if (SetSpawn.shouldSendErrorMessage) {
             Text message = Text.of("§c" + SetSpawn.errorMessage + " This run is not verifiable.");
             player.sendMessage(message, false);
         }
         SetSpawn.shouldSendErrorMessage = false;
     }
-
 }
