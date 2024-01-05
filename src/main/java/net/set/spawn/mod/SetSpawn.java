@@ -87,10 +87,10 @@ public class SetSpawn implements ClientModInitializer {
         Path home = Paths.get(System.getProperty("user.home"));
         String filename = "setspawn.json";
         OperatingSystem os = Minecraft.method_2940();
-        if (os == OperatingSystem.LINUX) {
+        if (false /* os == OperatingSystem.LINUX */) {
             return home.resolve(".config").resolve(globalDir).resolve(filename);
         }
-        return home.resolve(filename);
+        return home.resolve(globalDir).resolve(filename);
     }
 
     private static void createIfNonExistent(Path file) {
