@@ -18,7 +18,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Unique
     private boolean override;
 
-
     public ServerPlayerEntityMixin(World world) {
         super(world);
     }
@@ -40,15 +39,24 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             return false;
         }
 
+        // normalize the decimal the user put in
         this.xFloor = MathHelper.floor(seedObject.getX());
         this.zFloor = MathHelper.floor(seedObject.getZ());
         BlockPos spawnPos = this.world.getWorldSpawnPos();
 
-        // lower bound = x + 0 - 10 + 0.5   or x - 9.5
-        // higher bound = x + 19 - 10 + 0.5 or x + 9.5
-        // floor(x) + 0.5 and floor(z) + 0.5 normalizes decimal that user puts in
-        if (Math.abs(xFloor + 0.5 - spawnPos.x) > 10 || Math.abs(this.zFloor + 0.5 - spawnPos.z) > 10) {
-            SetSpawn.setError(true, "The X or Z coordinates given (" + seedObject.getX() + ", " + seedObject.getZ() + ") are more than 10 blocks away from the world spawn. Not overriding player spawnpoint.");
+        // from Lnet/minecraft/entity/player/ServerPlayerEntity;<init>
+        // BlockPos pos = world.getWorldSpawnPos();
+        // int x = pos.x;
+        // int z = pos.z;
+        // x += this.random.nextInt(20) - 10;
+        // z += this.random.nextInt(20) - 10;
+
+        // therefore
+        // x + 10 - pos.x is the value of the random call
+
+        // check if the values are within random.nextInt(20)
+        if (xFloor + 10 - spawnPos.x < 0 || xFloor + 10 - spawnPos.x > 19 || zFloor + 10 - spawnPos.z < 0 || zFloor + 10 - spawnPos.z > 19) {
+            SetSpawn.setError(true, String.format("The X or Z coordinates given (%d, %d) are more than 10 blocks away from the world spawn (%d, %d). Not overriding player spawnpoint. ", xFloor, zFloor, spawnPos.x, spawnPos.z));
             return false;
         }
         return true;

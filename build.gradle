@@ -20,6 +20,14 @@ loom {
             options.putAll(["mark-corresponding-synthetics": "1", "ind": "    "])
         }
     }
+
+    runs {
+        testClient {
+            // Copies settings from another run configuration.
+            inherit client
+            source = sourceSets.test
+        }
+    }
 }
 
 dependencies {

@@ -22,9 +22,7 @@ public class SetSpawn implements ClientModInitializer {
     public static Config config;
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    @SuppressWarnings("CallToPrintStackTrace")
-    @Override
-    public void onInitializeClient() {
+    static {
         globalConfigFile = getGlobalConfigFile();
         createIfNonExistent(globalConfigFile);
         localConfigFile = FabricLoader.getInstance().getConfigDir().resolve("setspawn.json");
@@ -33,8 +31,15 @@ public class SetSpawn implements ClientModInitializer {
         try {
             loadProperties();
         } catch (IOException e) {
+            // noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onInitializeClient() {
+        // make files in static initializer if someone accesses this class before,
+        // otherwise let it happen when fabric loads the entrypoint
     }
 
     public static Seed findSeedObjectFromLong(long seedLong) {
@@ -96,6 +101,7 @@ public class SetSpawn implements ClientModInitializer {
     private static void createIfNonExistent(Path file, boolean writeConfig) {
         try {
             if (!Files.exists(file)) {
+                Files.createDirectories(file.getParent());
                 Files.createFile(file);
                 if (writeConfig) {
                     writeDefaultProperties(file);
