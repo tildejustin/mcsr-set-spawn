@@ -1,5 +1,6 @@
 package net.set.spawn.mod;
 
+@SuppressWarnings("unused")
 public class Config {
     private boolean enabled;
     private boolean useGlobalConfig;
