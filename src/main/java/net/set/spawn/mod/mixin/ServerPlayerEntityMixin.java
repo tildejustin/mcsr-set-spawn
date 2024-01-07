@@ -28,8 +28,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
     }
     @Inject(method = "moveToSpawn", at = @At("HEAD"), cancellable = true)
     public void setspawnmod_setSpawn(ServerWorld world, CallbackInfo ci) {
-        if (SetSpawn.shouldModifySpawn) {
-            SetSpawn.shouldModifySpawn = false;
+        // tells us if the world was just generated or is old and was loaded
+        if (this.server.getSaveProperties().getPlayerData() == null) {
             Seed seedObject = SetSpawn.findSeedObjectFromLong(world.getSeed());
             String response;
             if (seedObject != null ) {
