@@ -6,30 +6,25 @@ import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.set.spawn.mod.Seed;
-import net.set.spawn.mod.SetSpawn;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import net.set.spawn.mod.*;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity implements ScreenHandlerListener {
-
-    @Shadow @Final public MinecraftServer server;
+    @Shadow
+    @Final
+    public MinecraftServer server;
 
     public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
         super(world, pos, yaw, profile);
     }
     @Inject(method = "moveToSpawn", at = @At("HEAD"), cancellable = true)
     public void setspawnmod_setSpawn(ServerWorld world, CallbackInfo ci) {
-        if (SetSpawn.shouldModifySpawn) {
-            SetSpawn.shouldModifySpawn = false;
+        if (SetSpawn.config.isEnabled() && this.server.getSaveProperties().getPlayerData() == null) {
             Seed seedObject = SetSpawn.findSeedObjectFromLong(world.getSeed());
             String response;
             if (seedObject != null ) {
@@ -65,5 +60,4 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Sc
             }
         }
     }
-
 }
