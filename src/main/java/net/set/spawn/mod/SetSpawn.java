@@ -50,6 +50,7 @@ public class SetSpawn implements ClientModInitializer {
     }
 
     private static void writeDefaultProperties(File file) throws IOException {
+        Seed cdSeed = new Seed("-765534645671258394", "Crafterdark 1.13 Seed", -205, -266);
         Seed[] seedsToWrite = new Seed[]{};
         Config config = new Config(true, false, seedsToWrite);
         try (Writer writer = new FileWriter(file)) {

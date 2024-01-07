@@ -4,11 +4,13 @@
   "package": "net.set.spawn.mod.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MinecraftServerMixin",
     "PlayerManagerMixin",
     "ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "MinecraftClientMixin"
+  ]
 }
