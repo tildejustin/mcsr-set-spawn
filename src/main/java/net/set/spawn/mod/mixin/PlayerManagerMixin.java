@@ -5,17 +5,21 @@ import net.minecraft.network.Connection;
 import net.minecraft.server.PlayerManager;
 import net.set.spawn.mod.SetSpawn;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerManager.class)
-public class PlayerManagerMixin {
+import java.util.logging.Level;
 
+@Mixin(PlayerManager.class)
+public abstract class PlayerManagerMixin {
+    /**
+     * When the player connects, send an error message in the chat and log if there is one, and reset the error state.
+     */
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     public void onPlayerConnect(Connection connection, ServerPlayerEntity player, CallbackInfo ci) {
         if (SetSpawn.shouldSendErrorMessage) {
-            player.method_3331("§c" + SetSpawn.errorMessage + " This run is not verifiable.");
+            player.method_3331(SetSpawn.errorMessage);
+            SetSpawn.log(Level.WARNING, SetSpawn.errorMessage);
         }
         SetSpawn.shouldSendErrorMessage = false;
     }

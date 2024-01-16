@@ -1,5 +1,6 @@
 package net.set.spawn.mod;
 
+@SuppressWarnings("unused")
 public class Seed {
     private String seed;
     private String seedName;
@@ -12,6 +13,13 @@ public class Seed {
     public Seed(String seed, String seedName, double x, double z) {
         this.seed = seed;
         this.seedName = seedName;
+        this.x = x;
+        this.z = z;
+    }
+
+    public Seed(String seed, double x, double z) {
+        this.seed = seed;
+        this.seedName = "";
         this.x = x;
         this.z = z;
     }
