@@ -28,8 +28,7 @@ def getVersionMetadata() {
 	return "rev.${id}"
 }
 
-archivesBaseName = "${project.mod_id}-${project.target_version}"
-version = "${getVersionMetadata()}"
+version = "$mod_version+$target_version"
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"

@@ -16,7 +16,6 @@ public class SetSpawn implements ClientModInitializer {
     public static final String MOD_ID = "setspawnmod";
     public static final String subDir = SetSpawn.MOD_ID + "_global";
     public static Logger LOGGER = LogManager.getLogger();
-    public static boolean shouldModifySpawn;
     public static boolean shouldSendErrorMessage;
     public static String errorMessage;
     public static File localConfigFile;
@@ -44,7 +43,9 @@ public class SetSpawn implements ClientModInitializer {
     }
 
     private static void writeDefaultProperties(File file) throws IOException {
-        Seed[] seedsToWrite = new Seed[]{};
+        Seed luckyBastion = new Seed("-6832782463825130901", "Lucky Bastion", -374, 166);
+        Seed shipwreckIsland = new Seed("1616970520256216229", "Shipwreck Island", -310, 720);
+        Seed[] seedsToWrite = new Seed[]{luckyBastion, shipwreckIsland};
         Config config = new Config(true, false, seedsToWrite);
 
         try (Writer writer = new FileWriter(file)) {
