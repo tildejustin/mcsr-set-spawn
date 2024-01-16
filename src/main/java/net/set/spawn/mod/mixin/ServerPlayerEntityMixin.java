@@ -27,7 +27,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements Co
         super(world, profile);
     }
 
-    @Inject(method = "moveToSpawn", at = @At("HEAD"), cancellable = true)
+    // method_14245 == moveToSpawn, intermediary method is matched between the whole range but was only named beginning in 1.15 mappings
+    @Inject(method = "method_14245", at = @At("HEAD"), cancellable = true)
     public void setspawnmod_setSpawn(ServerWorld world, CallbackInfo ci) {
         if (SetSpawn.shouldModifySpawn) {
             SetSpawn.shouldModifySpawn = false;

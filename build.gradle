@@ -1,34 +1,12 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
-	id 'org.ajoberstar.grgit' version '4.1.0'
+	id "fabric-loom" version "1.5-SNAPSHOT"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+version = "$mod_version+$target_version"
 
-def getVersionMetadata() {
-	// CI builds version numbers
-	def build_id = System.getenv("RELEASE_TAG")
-	if (build_id != null) {
-		return build_id
-	}
-
-	// Development builds
-	if (grgit == null) {
-		return "dev"
-	}
-
-	// Named development builds
-	def id = grgit.head().abbreviatedId
-	if (!grgit.status().clean) {
-		id += "-dirty"
-	}
-
-	return "rev.${id}"
+base {
+	archivesName = mod_id
 }
-
-archivesBaseName = "${project.mod_id}-${project.minecraft_version}"
-version = "${getVersionMetadata()}"
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -37,20 +15,23 @@ dependencies {
 }
 
 processResources {
-	inputs.property "mod_id", project.mod_id
-	inputs.property "version", project.version
-
 	filesMatching("fabric.mod.json") {
 		expand "mod_id": project.mod_id, "version": project.version
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+	if (JavaVersion.current().isJava9Compatible()) it.options.release.set(8)
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	if (JavaVersion.current().isJava9Compatible()) it.options.release.set(8)
 }
 
 java {
-	withSourcesJar()
+	sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 jar {
