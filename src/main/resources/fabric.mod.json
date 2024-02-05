@@ -1,9 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "set-spawn",
   "version": "${version}",
-
-  "name": "Set Spawn 1.16.1",
+  "name": "Set Spawn",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
   "authors": [
     "bdamja",
@@ -13,7 +12,6 @@
   ],
   "license": "LGPL-3.0-only",
   "icon": "assets/setspawnmod/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -25,7 +23,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.15.0",
-    "minecraft": "~1.16.1"
+    "minecraft": "1.16.1"
   },
   "breaks": {
     "worldpreview": "*"

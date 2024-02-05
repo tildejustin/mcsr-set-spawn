@@ -5,7 +5,7 @@ public class Config {
     private boolean useGlobalConfig;
     private Seed[] seeds;
 
-    public Config(){
+    public Config() {
     }
 
     public Config(boolean enabled, boolean useGlobalConfig, Seed[] seeds) {

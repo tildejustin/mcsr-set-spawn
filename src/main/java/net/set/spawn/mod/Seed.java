@@ -6,7 +6,7 @@ public class Seed {
     private double x;
     private double z;
 
-    public Seed(){
+    public Seed() {
     }
 
     public Seed(String seed, String seedName, double x, double z) {
