@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "set-spawn",
   "version": "${version}",
-  "name": "Set Spawn 1.9-1.12.2",
+  "name": "Set Spawn",
   "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
   "authors": [
     "bdamja",
@@ -21,7 +21,7 @@
     ]
   },
   "mixins": [
-    "${mod_id}.mixins.json"
+    "set-spawn.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.12.12",

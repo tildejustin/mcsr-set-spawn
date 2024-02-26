@@ -1,14 +1,9 @@
 package net.set.spawn.mod;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import java.io.*;
 import java.util.Objects;
@@ -50,8 +45,7 @@ public class SetSpawn implements ClientModInitializer {
     }
 
     private static void writeDefaultProperties(File file) throws IOException {
-        Seed WR = new Seed("-2655591615036867964", "Savannah", -173.5, 1512.5);
-        Seed[] seedsToWrite = new Seed[]{WR};
+        Seed[] seedsToWrite = new Seed[]{};
         Config config = new Config(true, false, seedsToWrite);
         try (Writer writer = new FileWriter(file)) {
             Gson gson = new GsonBuilder()
@@ -90,5 +84,4 @@ public class SetSpawn implements ClientModInitializer {
             e.printStackTrace();
         }
     }
-
 }
