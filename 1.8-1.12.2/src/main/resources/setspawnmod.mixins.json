@@ -5,11 +5,16 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MinecraftServerMixin",
-    "PlayerManagerMixin",
-    "ServerPlayerEntityMixin",
-    "SpawnLocatingAccessor"
+    "ServerPlayerEntityMixin"
+  ],
+  "client": [
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true,
+    "requireAnnotations": true
   }
 }

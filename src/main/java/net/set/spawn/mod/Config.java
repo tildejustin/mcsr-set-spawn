@@ -1,11 +1,12 @@
 package net.set.spawn.mod;
 
 public class Config {
-    private boolean enabled;
-    private boolean useGlobalConfig;
-    private Seed[] seeds;
+    private final boolean enabled;
+    private final boolean useGlobalConfig;
+    private final Seed[] seeds;
 
-    public Config(){
+    public Config() {
+        this(false, false, new Seed[0]);
     }
 
     public Config(boolean enabled, boolean useGlobalConfig, Seed[] seeds) {

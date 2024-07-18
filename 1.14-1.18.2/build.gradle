@@ -1,0 +1,9 @@
+plugins {
+    id "loom"
+}
+
+dependencies {
+    minecraft libs.minecraft
+    mappings variantOf(libs.yarn.mappings) { classifier "v2" }
+    include implementation(project(path: ":", configuration: "namedElements"))
+}

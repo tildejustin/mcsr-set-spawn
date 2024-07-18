@@ -1,31 +1,35 @@
 {
   "schemaVersion": 1,
-  "id": "set-spawn",
+  "id": "setspawnmod-common",
   "version": "${version}",
-
-  "name": "Set Spawn 1.16.1",
-  "description": "Sets the player's spawnpoint in SSG to specified coordinates.",
+  "name": "Set Spawn Common",
+  "description": "Library code for the Set Spawn mod.",
   "authors": [
-    "bdamja",
+    {
+      "name": "bdamja",
+      "contact": {
+        "homepage": "https://github.com/bdamja"
+      }
+    }
+  ],
+  "contributors": [
     "Void_X_Walker",
     "jan-leila",
-    "RedLime"
+    "RedLime",
+    "tildejustin",
+    "contaria"
   ],
   "license": "LGPL-3.0-only",
   "icon": "assets/setspawnmod/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "client": [
       "net.set.spawn.mod.SetSpawn"
     ]
   },
-  "mixins": [
-    "setspawnmod.mixins.json"
-  ],
   "depends": {
-    "fabricloader": ">=0.12.2",
-    "minecraft": "~1.16.1"
+    "fabricloader": ">=0.15.0",
+    "minecraft": "*"
   },
   "breaks": {
     "worldpreview": "*"
