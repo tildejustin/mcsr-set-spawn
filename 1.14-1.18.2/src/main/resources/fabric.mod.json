@@ -30,6 +30,6 @@
     "minecraft": ">1.13.2 <1.19"
   },
   "breaks": {
-    "worldpreview": "*"
+    "worldpreview": "<6.0"
   }
 }
