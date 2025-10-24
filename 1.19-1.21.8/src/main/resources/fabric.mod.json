@@ -32,9 +32,9 @@
   ],
   "depends": {
     "fabricloader": ">=0.15.0",
-    "minecraft": ">1.18.2"
+    "minecraft": ">1.18.2 <1.21.9"
   },
   "breaks": {
-    "worldpreview": "*"
+    "worldpreview": "<6.0"
   }
 }
