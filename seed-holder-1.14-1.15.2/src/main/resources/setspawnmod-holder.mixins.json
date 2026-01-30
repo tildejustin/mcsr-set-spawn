@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.set.spawn.mod.seed.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "LevelInfoMixin",
+    "MinecraftServerMixin"
+  ],
+  "client": [
+    "CreateWorldScreenMixin",
+    "IntegratedServerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true,
+    "requireAnnotations": true
+  }
+}

@@ -45,7 +45,8 @@ public abstract class ServerPlayerEntityMixin {
     ) {
         int originalResult = original.call(random, bounds);
 
-        if (((MinecraftServerExtended) this.server).setspawnmod$shouldModifySpawn()) {
+        SeedHolder seedHolder = ((MinecraftServerExtended) this.server).setspawnmod$getSeedHolder();
+        if (seedHolder.shouldModifySpawn()) {
             seed.set(SetSpawn.findSeedObjectFromLong(this.getServerWorld().getSeed()));
         }
         Seed seedObject = seed.get();

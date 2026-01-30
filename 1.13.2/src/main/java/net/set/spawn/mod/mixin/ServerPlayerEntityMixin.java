@@ -46,8 +46,9 @@ public abstract class ServerPlayerEntityMixin {
     ) {
         int originalResult = original.call(random, bounds);
 
-        if (((MinecraftServerExtended) this.server).setspawnmod$shouldModifySpawn()) {
-            ((MinecraftServerExtended) this.server).setspawnmod$setShouldModifySpawn(false);
+        SeedHolder seedHolder = ((MinecraftServerExtended) server).setspawnmod$getSeedHolder();
+        if (seedHolder.shouldModifySpawn()) {
+            seedHolder.setJoined(true); // TODO: change location for WP
             seed.set(SetSpawn.findSeedObjectFromLong(this.getServerWorld().method_3588().getSeed()));
         }
         Seed seedObject = seed.get();

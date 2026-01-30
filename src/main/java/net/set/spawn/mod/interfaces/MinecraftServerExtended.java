@@ -1,14 +1,15 @@
 package net.set.spawn.mod.interfaces;
 
-public interface MinecraftServerExtended {
-    boolean setspawnmod$shouldModifySpawn();
+import net.set.spawn.mod.SeedHolder;
 
-    void setspawnmod$setShouldModifySpawn(boolean shouldModifySpawn);
+public interface MinecraftServerExtended {
+    SeedHolder setspawnmod$getSeedHolder();
 
     default void setspawnmod$setError(String error) {
+        throw new UnsupportedOperationException();
     }
 
     default String setspawnmod$getError() {
-        return "";
+        throw new UnsupportedOperationException();
     }
 }

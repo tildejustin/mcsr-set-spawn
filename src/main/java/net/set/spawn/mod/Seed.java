@@ -1,14 +1,17 @@
 package net.set.spawn.mod;
 
+import org.spongepowered.include.com.google.gson.annotations.SerializedName;
+
 public class Seed {
     private final String seed;
-    private final String seed_name;
+    @SerializedName("seed_name")
+    private final String seedName;
     private final double x;
     private final double z;
 
-    public Seed(String seed, String seed_name, double x, double z) {
+    public Seed(String seed, String seedName, double x, double z) {
         this.seed = seed;
-        this.seed_name = seed_name;
+        this.seedName = seedName;
         this.x = x;
         this.z = z;
     }
@@ -22,7 +25,7 @@ public class Seed {
     }
 
     public String getSeedName() {
-        return seed_name;
+        return seedName;
     }
 
     public double getX() {

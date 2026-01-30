@@ -8,7 +8,6 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SetSpawn implements ClientModInitializer {
@@ -16,7 +15,7 @@ public class SetSpawn implements ClientModInitializer {
     public static Path globalConfigFile;
     public static Path localConfigFile;
     public static Config config;
-    public static String remoteConfigContents;
+    private static String remoteConfigContents;
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static void loadProperties() {
@@ -65,6 +64,7 @@ public class SetSpawn implements ClientModInitializer {
             output = reader.lines().collect(Collectors.joining("\n"));
         } catch (IOException e) {
             System.out.println("Set Spawn error: Connection took too long or could not be made!");
+            e.printStackTrace();
         }
         return output;
     }
@@ -78,7 +78,7 @@ public class SetSpawn implements ClientModInitializer {
         String seed = String.valueOf(seedLong);
         Seed[] seedObjects = config.getSeeds();
         for (Seed seedObject : seedObjects) {
-            if (Objects.equals(seedObject.getSeed(), seed)) {
+            if (seedObject != null && (seed.equals(seedObject.getSeed()) || seedLong == seedObject.getSeed().hashCode())) {
                 return seedObject;
             }
         }

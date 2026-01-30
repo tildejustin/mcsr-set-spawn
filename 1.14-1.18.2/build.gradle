@@ -5,5 +5,7 @@ plugins {
 dependencies {
     minecraft libs.minecraft
     mappings variantOf(libs.yarn.mappings) { classifier "v2" }
-    include implementation(project(path: ":", configuration: "namedElements"))
+    include implementation(project(":"))
+    include project(":seed-holder-1.14-1.15.2")
+    include project(":seed-holder-1.16-1.18.2")
 }

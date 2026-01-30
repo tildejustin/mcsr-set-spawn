@@ -16,6 +16,6 @@ public abstract class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     private void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
-        ((MinecraftServerExtended) this.server).setspawnmod$setShouldModifySpawn(false);
+        ((MinecraftServerExtended) this.server).setspawnmod$getSeedHolder().setJoined(true);
     }
 }

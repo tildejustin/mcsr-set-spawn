@@ -1,7 +1,10 @@
 package net.set.spawn.mod;
 
+import org.spongepowered.include.com.google.gson.annotations.SerializedName;
+
 public class Config {
     private final boolean enabled;
+    @SerializedName("use_global_config")
     private final boolean useGlobalConfig;
     private final Seed[] seeds;
 

@@ -1,0 +1,6 @@
+- fix atum for pre 1.14
+- support wp 6 in 1.19+
+- add breaks for wp <6 in 1.19+
+- finish seed-holder and make sure it works in all versions and demo
+- add depends for -seed-holder and -common in every version
+- add breaks for atum <1.4 in -seed-holder in pre 1.14

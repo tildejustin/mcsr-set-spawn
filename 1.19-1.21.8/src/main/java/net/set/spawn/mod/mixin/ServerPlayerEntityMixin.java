@@ -58,8 +58,9 @@ public abstract class ServerPlayerEntityMixin {
         isRandomSpawn.set(true);
         int originalResult = original.call(random, bounds);
 
-        if (((MinecraftServerExtended) this.server).setspawnmod$shouldModifySpawn()) {
-            ((MinecraftServerExtended) this.server).setspawnmod$setShouldModifySpawn(false);
+        SeedHolder seedHolder = ((MinecraftServerExtended) server).setspawnmod$getSeedHolder();
+        if (seedHolder.shouldModifySpawn()) {
+            seedHolder.setJoined(true); // TODO: change location for WP
             seed.set(SetSpawn.findSeedObjectFromLong(this.getWorld().getSeed()));
         }
         Seed seedObject = seed.get();
@@ -91,7 +92,8 @@ public abstract class ServerPlayerEntityMixin {
             method = {
                     "moveToSpawn",
                     "method_14245(Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;)Lnet/minecraft/class_2338;"
-            },            at = @At(
+            },
+            at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/server/network/SpawnLocating;findOverworldSpawn(Lnet/minecraft/server/world/ServerWorld;II)Lnet/minecraft/util/math/BlockPos;"
             )

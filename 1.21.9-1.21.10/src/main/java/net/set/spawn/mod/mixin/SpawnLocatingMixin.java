@@ -55,8 +55,9 @@ public abstract class SpawnLocatingMixin {
 
         int originalResult = original.call(random, bounds);
 
-        if (((MinecraftServerExtended) server).setspawnmod$shouldModifySpawn()) {
-            ((MinecraftServerExtended) server).setspawnmod$setShouldModifySpawn(false);
+        SeedHolder seedHolder = ((MinecraftServerExtended) this.server).setspawnmod$getSeedHolder();
+        if (seedHolder.shouldModifySpawn()) {
+            seedHolder.setJoined(true); // TODO: change for WP
             seed.set(SetSpawn.findSeedObjectFromLong(this.world.getSeed()));
         }
         Seed seedObject = seed.get();

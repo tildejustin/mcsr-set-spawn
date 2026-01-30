@@ -32,7 +32,9 @@
   ],
   "depends": {
     "fabricloader": ">=0.15.0",
-    "minecraft": ">1.7.10 <1.13"
+    "minecraft": ">1.7.10 <1.13",
+    "setspawnmod-common": "*",
+    "setspawnmod-seed-holder": "*"
   },
   "breaks": {
     "worldpreview": "*"

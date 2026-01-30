@@ -16,7 +16,7 @@ public abstract class ServerPlayerEntityMixin {
 
     @Shadow
     @Final
-    public MinecraftServer server;
+    private MinecraftServer server;
 
     @Inject(method = "onSpawn", at = @At("TAIL"))
     private void sendErrorMessage(CallbackInfo ci) {
